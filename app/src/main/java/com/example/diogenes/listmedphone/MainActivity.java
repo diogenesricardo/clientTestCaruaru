@@ -1,6 +1,7 @@
 package com.example.diogenes.listmedphone;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -79,7 +80,6 @@ public class MainActivity extends AppCompatActivity /*implements RecyclerView.On
     private void setupRecycler() {
 
         mRecyclerView.setAdapter(mAdapter);
-
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                 mRecyclerView, new ClickListener() {
             @Override
@@ -87,6 +87,10 @@ public class MainActivity extends AppCompatActivity /*implements RecyclerView.On
                 //Values are passing to activity & to fragment as well
                 Toast.makeText(MainActivity.this, "Single Click on position        :" + position,
                         Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), ActorDetailActivity.class);
+                startActivity(intent);
+
+
             }
 
             @Override

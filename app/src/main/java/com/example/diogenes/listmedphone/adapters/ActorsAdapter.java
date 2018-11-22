@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.diogenes.listmedphone.R;
@@ -37,6 +38,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.MyViewHold
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.mTextView.setText(actorsList.get(position).name);
+        holder.imageView.setImageResource(R.mipmap.ic_avatar_foreground);
 
 //        holder.moreButton.setOnClickListener(view -> updateItem(position));
 //        holder.deleteButton.setOnClickListener(view -> removerItem(position));
@@ -50,10 +52,12 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.MyViewHold
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView;
+        public ImageView imageView;
 
         public MyViewHolder(View v) {
             super(v);
             mTextView = (TextView) itemView.findViewById(R.id.tw_name_actor);
+            imageView = (ImageView) itemView.findViewById(R.id.iv_avatar);
         }
     }
 

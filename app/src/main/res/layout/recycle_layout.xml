@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tw_name_actor"
+        tools:text="Line 1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"/>
+
+    <!--<ImageButton
+        android:id="@+id/main_line_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@" />-->
+
+    <!--<ImageButton-->
+        <!--android:id="@id/main_line_delete"-->
+        <!--android:src="@drawable/ic_delete_black_24dp" />-->
+
+</LinearLayout>

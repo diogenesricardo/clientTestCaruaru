@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.MyViewHolder> {
 
-    private List<Actor> actorsList;
+    public List<Actor> actorsList;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public ActorsAdapter(List<Actor> actorsList) {
@@ -59,6 +59,10 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.MyViewHold
             mTextView = (TextView) itemView.findViewById(R.id.tw_name_actor);
             imageView = (ImageView) itemView.findViewById(R.id.iv_avatar);
         }
+    }
+
+    public Actor getItem(int position){
+        return actorsList.get(position);
     }
 
 }

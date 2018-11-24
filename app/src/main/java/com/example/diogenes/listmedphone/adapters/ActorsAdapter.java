@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.diogenes.listmedphone.R;
 import com.example.diogenes.listmedphone.model.Actor;
+import com.example.diogenes.listmedphone.util.DownloadImageTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.MyViewHold
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ActorsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
-
+    public ActorsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         MyViewHolder vh = new MyViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycle_layout, parent, false));
         return vh;
@@ -37,14 +36,16 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.MyViewHold
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(actorsList.get(position).name);
-        holder.imageView.setImageResource(R.mipmap.ic_avatar_foreground);
-
-//        holder.moreButton.setOnClickListener(view -> updateItem(position));
-//        holder.deleteButton.setOnClickListener(view -> removerItem(position));
+        Actor actor = actorsList.get(position);
+        holder.mTextView.setText(actor.name);
+        if (actor.favorite) {
+            DownloadImageTask downloadImageTask = new DownloadImageTask(holder.imageView);
+            downloadImageTask.execute(actor.avatar);
+        } else {
+            holder.imageView.setImageResource(R.mipmap.ic_avatar_foreground);
+        }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return actorsList != null ? actorsList.size() : 0;
@@ -61,7 +62,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.MyViewHold
         }
     }
 
-    public Actor getItem(int position){
+    public Actor getItem(int position) {
         return actorsList.get(position);
     }
 

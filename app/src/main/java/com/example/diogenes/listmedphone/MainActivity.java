@@ -1,7 +1,10 @@
 package com.example.diogenes.listmedphone;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +25,7 @@ import com.example.diogenes.listmedphone.dao.ActorDB;
 import com.example.diogenes.listmedphone.interfaces.ClickListener;
 import com.example.diogenes.listmedphone.interfaces.MedphoneAPI;
 import com.example.diogenes.listmedphone.model.Actor;
+import com.example.diogenes.listmedphone.util.DownloadImageTask;
 import com.example.diogenes.listmedphone.util.RecyclerTouchListener;
 
 import java.util.ArrayList;
@@ -38,7 +42,6 @@ public class MainActivity extends AppCompatActivity /*implements RecyclerView.On
     private RecyclerView mRecyclerView;
     private ActorsAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    //private ImageView ivAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,12 @@ public class MainActivity extends AppCompatActivity /*implements RecyclerView.On
         setContentView(R.layout.activity_main);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list_actors_medphone);
+
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
 
         mRecyclerView.setHasFixedSize(true);
@@ -82,38 +91,30 @@ public class MainActivity extends AppCompatActivity /*implements RecyclerView.On
         try {
             ActorDB actorDB = new ActorDB(getBaseContext());
             List<Actor> actorListDB = actorDB.findAll();
+            List<Actor> actorListWS = mAdapter.actorsList;
 
-            for (int i = 0; i < actorListDB.size(); i++) {
-                Actor actor = actorListDB.get(i);
-                if (mAdapter.actorsList.get(i).id == actor.id) {
-                    actor.favorite = true;
-                    mAdapter.actorsList.set(i, actor);
-                    //ImageView ivAvatar = (ImageView) findViewById(R.id.iv_avatar);
-                    //ivAvatar.setImageDrawable(ActorDetailActivity.LoadImageFromWebOperations(actor.avatar));
+            for (Actor actor : actorListDB) {
+                for (Actor actorWS : actorListWS) {
+                    if (actor.id == actorWS.id) {
+                        actorWS.favorite = true;
+                        break;
+                    }
                 }
             }
 
             mRecyclerView.setAdapter(mAdapter);
-
             mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
                     mRecyclerView, new ClickListener() {
                 @Override
                 public void onClick(View view, final int position) {
-                    //Values are passing to activity & to fragment as well
-                    Toast.makeText(MainActivity.this, "Single Click on position :" + position,
-                            Toast.LENGTH_SHORT).show();
-
                     Intent intent = new Intent(getApplicationContext(), ActorDetailActivity.class);
                     intent.putExtra("actor", mAdapter.getItem(position));
-
                     startActivity(intent);
-
                 }
 
                 @Override
                 public void onLongClick(View view, int position) {
-                    Toast.makeText(MainActivity.this, "Long press on position :" + position,
-                            Toast.LENGTH_LONG).show();
+
                 }
             }));
 
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity /*implements RecyclerView.On
         } catch (Exception e) {
             Log.e("medphone", e.getMessage());
             e.printStackTrace();
-            Toast.makeText(getBaseContext(),"Loading data fail",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "Loading data fail", Toast.LENGTH_SHORT).show();
         }
 
 

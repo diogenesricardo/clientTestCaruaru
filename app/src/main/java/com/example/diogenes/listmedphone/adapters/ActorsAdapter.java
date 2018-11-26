@@ -1,5 +1,7 @@
 package com.example.diogenes.listmedphone.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.diogenes.listmedphone.R;
+import com.example.diogenes.listmedphone.interfaces.ClickListener;
 import com.example.diogenes.listmedphone.model.Actor;
 import com.example.diogenes.listmedphone.util.DownloadImageTask;
 
@@ -60,6 +63,7 @@ public class ActorsAdapter extends RecyclerView.Adapter<ActorsAdapter.MyViewHold
             mTextView = (TextView) itemView.findViewById(R.id.tw_name_actor);
             imageView = (ImageView) itemView.findViewById(R.id.iv_avatar);
         }
+
     }
 
     public Actor getItem(int position) {

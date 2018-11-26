@@ -23,7 +23,6 @@ import java.net.URL;
 
 public class ActorDetailActivity extends AppCompatActivity {
 
-    boolean favorite = false;
     private TextView tvName;
     private TextView tvCreatedAt;
     private ImageView ivAvatar;
@@ -53,26 +52,25 @@ public class ActorDetailActivity extends AppCompatActivity {
 
         tvName.setText(actor.name);
         tvCreatedAt.setText(actor.createdAt);
+        Log.v("medphone", "Activity criada");
     }
 
     public void makeFavorite(View view) {
-
-        if (favorite == true) {
+        ActorDB actorDB = new ActorDB(getBaseContext());
+        if (actor.favorite == true) {
             ivFavorite.setImageResource(android.R.drawable.star_big_off);
-            favorite = false;
-            //DELETE NO BANCO
+            actor.favorite = false;
+            actorDB.delete(actor.id);
+            ivAvatar.setImageResource(R.mipmap.ic_avatar_foreground);
         } else {
-
             try {
-                ActorDB actorDB = new ActorDB(getBaseContext());
                 actorDB.inserir(actor);
-//                Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(actor.avatar).getContent());
-//                imageView.setImageBitmap(bitmap);
+
                 DownloadImageTask downloadImageTask = new DownloadImageTask(ivAvatar);
                 downloadImageTask.execute(actor.avatar);
 
                 ivFavorite.setImageResource(android.R.drawable.star_big_on);
-                favorite = true;
+                actor.favorite = true;
             } catch (NullPointerException e) {
                 Log.e("medphone", e.getMessage());
                 Toast.makeText(this, "Fail in database", Toast.LENGTH_SHORT).show();
@@ -81,15 +79,9 @@ public class ActorDetailActivity extends AppCompatActivity {
         }
     }
 
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            return null;
-        }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
-
-
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">List MedPhone</string>
+    <string name="apresentation">This app list the main actors of world series</string>
+    <string name="tips">Toach a name actor to favorite and see his photo</string>
 </resources>
